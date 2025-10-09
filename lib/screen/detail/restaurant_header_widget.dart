@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/data/api/api_services.dart';
 import 'package:restaurant_app/data/model/restaurant.dart';
 
-
 class RestaurantHeader extends StatelessWidget {
   const RestaurantHeader({super.key, required this.restaurant});
   final Restaurant restaurant;
@@ -32,8 +31,9 @@ class RestaurantHeader extends StatelessWidget {
                 children: [
                   Text(
                     restaurant.name,
-                    style: Theme.of(context).textTheme.headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(

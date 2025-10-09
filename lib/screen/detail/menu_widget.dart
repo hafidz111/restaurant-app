@@ -19,8 +19,9 @@ class RestaurantMenu extends StatelessWidget {
               .map(
                 (cat) => Chip(
                   label: Text(cat.name),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primaryContainer,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer,
                   labelStyle: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -48,8 +49,11 @@ class RestaurantMenu extends StatelessWidget {
     );
   }
 
-  Widget _horizontalMenuList(BuildContext context, List<String> items,
-      {required IconData icon}) {
+  Widget _horizontalMenuList(
+    BuildContext context,
+    List<String> items, {
+    required IconData icon,
+  }) {
     return SizedBox(
       height: 120,
       child: ListView.separated(

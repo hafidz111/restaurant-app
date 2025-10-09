@@ -6,7 +6,7 @@ import 'package:restaurant_app/data/provider/favorite/local_database_provider.da
 
 class FavoriteIconWidget extends StatefulWidget {
   final Restaurant restaurant;
-  
+
   const FavoriteIconWidget({super.key, required this.restaurant});
 
   @override
@@ -21,7 +21,9 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 
     Future.microtask(() async {
       await localDatabaseProvider.loadRestaurantById(widget.restaurant.id);
-      final value = localDatabaseProvider.checkItemFavorite(widget.restaurant.id);
+      final value = localDatabaseProvider.checkItemFavorite(
+        widget.restaurant.id,
+      );
       favoriteIconProvider.isFavorite = value;
     });
 
@@ -39,7 +41,9 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
         if (!isFavorite) {
           await localDatabaseProvider.saveRestaurant(widget.restaurant);
         } else {
-          await localDatabaseProvider.removeRestaurantById(widget.restaurant.id);
+          await localDatabaseProvider.removeRestaurantById(
+            widget.restaurant.id,
+          );
         }
         favoriteIconProvider.isFavorite = !isFavorite;
         localDatabaseProvider.loadAllRestaurant();
@@ -49,7 +53,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
             ? Icons.favorite
             : Icons.favorite_border,
         color: Colors.red,
-      )
+      ),
     );
   }
 }

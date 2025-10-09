@@ -33,7 +33,8 @@ class RestaurantCard extends StatelessWidget {
                 child: Image.network(
                   ApiServices.getImageUrl(restaurant.pictureId, size: "medium"),
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>const Icon(Icons.error)
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.error),
                 ),
               ),
             ),

@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
           return switch (value.indexBottomNavBar) {
             0 => const HomeScreen(),
             1 => const FavoriteScreen(),
-            _ => const SettingScreen()
+            _ => const SettingScreen(),
           };
         },
       ),
@@ -40,7 +40,7 @@ class MainScreen extends StatelessWidget {
             icon: Icon(Icons.settings),
             label: "Setting",
             tooltip: "Setting",
-            )
+          ),
         ],
       ),
     );

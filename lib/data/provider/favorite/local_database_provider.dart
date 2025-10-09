@@ -19,7 +19,7 @@ class LocalDatabaseProvider extends ChangeNotifier {
   Future<void> saveRestaurant(Restaurant value) async {
     try {
       final result = await _service.insertItem(value);
-      
+
       final isError = result == 0;
       if (isError) {
         _message = 'Failed to save your data';

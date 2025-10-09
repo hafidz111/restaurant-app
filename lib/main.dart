@@ -7,10 +7,12 @@ import 'package:restaurant_app/data/provider/favorite/local_database_provider.da
 import 'package:restaurant_app/data/provider/home/restaurant_list_provider.dart';
 import 'package:restaurant_app/data/provider/main/index_nav_provider.dart';
 import 'package:restaurant_app/data/provider/setting/shared_preferences_provider.dart';
+import 'package:restaurant_app/data/provider/setting/local_notification_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/main/main_screen.dart';
 import 'package:restaurant_app/screen/setting/setting_screen.dart';
+import 'package:restaurant_app/service/local_notification_service.dart';
 import 'package:restaurant_app/service/shared_preferences_service.dart';
 import 'package:restaurant_app/static/navigation_route.dart';
 import 'package:restaurant_app/style/theme/restaurant_theme.dart';
@@ -30,6 +32,16 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(create: (context) => IndexNavProvider()),
+       Provider(
+          create: (context) => LocalNotificationService(
+          )
+            ..configureLocalTimeZone(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocalNotificationProvider(
+            context.read<LocalNotificationService>(),
+          )..requestPermissions(),
+        ),
         Provider(create: (context) => ApiServices()),
         ChangeNotifierProvider(
           create: (context) =>

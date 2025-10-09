@@ -53,47 +53,46 @@ class LocalDatabaseService {
   }
 
   Future<List<Restaurant>> getAllItems() async {
-  final db = await _initializeDb();
-  final results = await db.query(_tableName);
+    final db = await _initializeDb();
+    final results = await db.query(_tableName);
 
-  return results.map((result) {
+    return results.map((result) {
+      return Restaurant.fromJson({
+        ...result,
+        "categories": jsonDecode((result["categories"] ?? "[]").toString()),
+        "menus": jsonDecode((result["menus"] ?? "{}").toString()),
+        "customerReviews": jsonDecode(
+          (result["customerReviews"] ?? "[]").toString(),
+        ),
+      });
+    }).toList();
+  }
+
+  Future<Restaurant?> getItemById(String id) async {
+    final db = await _initializeDb();
+    final results = await db.query(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+
+    if (results.isEmpty) return null;
+
+    final result = results.first;
     return Restaurant.fromJson({
       ...result,
       "categories": jsonDecode((result["categories"] ?? "[]").toString()),
       "menus": jsonDecode((result["menus"] ?? "{}").toString()),
-      "customerReviews": jsonDecode((result["customerReviews"] ?? "[]").toString()),
+      "customerReviews": jsonDecode(
+        (result["customerReviews"] ?? "[]").toString(),
+      ),
     });
-  }).toList();
-}
-
-  Future<Restaurant?> getItemById(String id) async {
-  final db = await _initializeDb();
-  final results = await db.query(
-    _tableName,
-    where: 'id = ?',
-    whereArgs: [id],
-    limit: 1,
-  );
-
-  if (results.isEmpty) return null;
-
-  final result = results.first;
-  return Restaurant.fromJson({
-    ...result,
-    "categories": jsonDecode((result["categories"] ?? "[]").toString()),
-    "menus": jsonDecode((result["menus"] ?? "{}").toString()),
-    "customerReviews": jsonDecode((result["customerReviews"] ?? "[]").toString()),
-  });
-}
-
+  }
 
   Future<String> removeItem(String id) async {
     final db = await _initializeDb();
-    await db.delete(
-      _tableName,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
 
     return id;
   }

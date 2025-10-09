@@ -4,14 +4,10 @@ class Setting {
   Setting({required this.isDarkMode});
 
   Map<String, dynamic> toJson() {
-    return {
-      'isDarkMode': isDarkMode,
-    };
+    return {'isDarkMode': isDarkMode};
   }
 
   factory Setting.fromJson(Map<String, dynamic> json) {
-    return Setting(
-      isDarkMode: json['isDarkMode'] ?? false,
-    );
+    return Setting(isDarkMode: json['isDarkMode'] ?? false);
   }
 }

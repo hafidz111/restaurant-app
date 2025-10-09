@@ -17,8 +17,9 @@ class FavoriteListProvider extends ChangeNotifier {
   }
 
   bool checkItemFavorite(Restaurant value) {
-    final restaurantInList = _favoriteList.where((element) => element.id == value.id);
+    final restaurantInList = _favoriteList.where(
+      (element) => element.id == value.id,
+    );
     return restaurantInList.isNotEmpty;
   }
-
 }

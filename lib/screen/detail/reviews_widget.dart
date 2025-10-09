@@ -10,8 +10,10 @@ class RestaurantReviews extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Customer Reviews",
-            style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          "Customer Reviews",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: 8),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -31,17 +33,14 @@ class RestaurantReviews extends StatelessWidget {
                             children: [
                               Text(
                                 review.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
+                                style: Theme.of(context).textTheme.titleSmall
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 4),
                               Expanded(
                                 child: Text(
                                   review.review,
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                   maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -49,9 +48,7 @@ class RestaurantReviews extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 review.date,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),

@@ -24,9 +24,7 @@ class RestaurantListProvider extends ChangeNotifier {
       } else if (e.toString().contains("TimeoutException")) {
         message = "Koneksi timeout. Coba lagi nanti.";
       }
-      _resultState = RestaurantListErrorState(
-        error: message,
-      );
+      _resultState = RestaurantListErrorState(error: message);
     } finally {
       notifyListeners();
     }
