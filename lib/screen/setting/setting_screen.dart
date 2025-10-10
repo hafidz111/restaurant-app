@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/setting.dart';
@@ -37,13 +39,12 @@ class _SettingScreenState extends State<SettingScreen> {
       if (mounted && setting != null) {
         setState(() {
           isDark = setting.isDarkMode;
+          isNotificationEnabled = setting.isNotification;
         });
       }
 
-      // ignore: use_build_context_synchronously
       await context
           .read<LocalNotificationProvider>()
-          // ignore: use_build_context_synchronously
           .checkPendingNotificationRequests(context);
     });
   }
@@ -64,12 +65,20 @@ class _SettingScreenState extends State<SettingScreen> {
             activeThumbColor: Colors.red,
             onChanged: (value) async {
               setState(() => isDark = value);
-              await prefProvider.saveSettingValue(Setting(isDarkMode: value));
+              await prefProvider.saveSettingValue(
+                Setting(
+                  isDarkMode: value,
+                  isNotification: isNotificationEnabled,
+                ),
+              );
+
+              final message = value
+                  ? 'Dark Mode is Active'
+                  : 'Dark Mode is Deactive';
 
               ScaffoldMessenger.of(
-                // ignore: use_build_context_synchronously
                 context,
-              ).showSnackBar(SnackBar(content: Text(prefProvider.message)));
+              ).showSnackBar(SnackBar(content: Text(message)));
             },
           ),
           const SizedBox(height: 10),
@@ -79,12 +88,14 @@ class _SettingScreenState extends State<SettingScreen> {
             activeThumbColor: Colors.blue,
             onChanged: (value) async {
               setState(() => isNotificationEnabled = value);
+              await prefProvider.saveSettingValue(
+                Setting(isDarkMode: isDark, isNotification: value),
+              );
 
               if (value) {
                 await notifProvider.requestPermissions();
                 await _scheduleDailyTenAMNotification();
 
-                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Daily notification scheduled at 10 AM'),
@@ -93,7 +104,6 @@ class _SettingScreenState extends State<SettingScreen> {
               } else {
                 await _cancelAllNotifications();
 
-                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('All scheduled notifications cancelled'),

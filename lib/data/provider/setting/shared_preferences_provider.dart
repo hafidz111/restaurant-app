@@ -17,7 +17,6 @@ class SharedPreferencesProvider extends ChangeNotifier {
     try {
       await _service.saveSettingValue(value);
       _setting = value;
-      _message = "Your data is saved";
     } catch (e) {
       _message = "Failed to save your data";
     }
@@ -27,7 +26,6 @@ class SharedPreferencesProvider extends ChangeNotifier {
   Future<void> getSettingValue() async {
     try {
       _setting = await _service.getSettingValue();
-      _message = "Data successfully retrieved";
     } catch (e) {
       _message = "Failed to get your data";
     }

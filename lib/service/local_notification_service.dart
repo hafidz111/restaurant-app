@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -9,7 +10,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 class LocalNotificationService {
-
   Future<bool> _isAndroidPermissionGranted() async {
     return await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
@@ -79,8 +79,8 @@ class LocalNotificationService {
       now.year,
       now.month,
       now.day,
-      8,
-      58,
+      10,
+      0,
     );
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
@@ -96,6 +96,7 @@ class LocalNotificationService {
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       channelId,
       channelName,
+      icon: '@mipmap/ic_launcher',
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
@@ -111,8 +112,8 @@ class LocalNotificationService {
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
-      'Daily scheduled notification title',
-      'This is a body of daily scheduled notification',
+      'Hey, Food Lover! 😋',
+      'Your stomach just sent a reminder: it’s 10 AM — time to eat something delicious!',
       datetimeSchedule,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
