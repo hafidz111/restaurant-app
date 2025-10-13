@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ExpandableDescription extends StatefulWidget {
+class ExpandableDescription extends StatelessWidget {
   final String text;
-  const ExpandableDescription({super.key, required this.text});
+  final ValueNotifier<bool> expanded = ValueNotifier(false);
 
-  @override
-  State<ExpandableDescription> createState() => _ExpandableDescriptionState();
-}
-
-class _ExpandableDescriptionState extends State<ExpandableDescription> {
-  bool expanded = false;
+  ExpandableDescription({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -17,70 +12,54 @@ class _ExpandableDescriptionState extends State<ExpandableDescription> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (!expanded) {
-          final span = TextSpan(text: widget.text, style: style);
-          final tp = TextPainter(
-            text: span,
-            maxLines: 3,
-            textDirection: TextDirection.ltr,
-          )..layout(maxWidth: constraints.maxWidth);
+        final span = TextSpan(text: text, style: style);
+        final tp = TextPainter(
+          text: span,
+          maxLines: 3,
+          textDirection: TextDirection.ltr,
+        )..layout(maxWidth: constraints.maxWidth);
 
-          String visibleText = widget.text;
-          if (tp.didExceedMaxLines) {
-            final endIndex = tp
-                .getPositionForOffset(Offset(constraints.maxWidth, tp.height))
-                .offset;
-            visibleText = widget.text.substring(0, endIndex);
-          }
+        final didExceed = tp.didExceedMaxLines;
+        final endIndex = didExceed
+            ? tp
+                  .getPositionForOffset(Offset(constraints.maxWidth, tp.height))
+                  .offset
+            : text.length;
+        final visibleText = text.substring(0, endIndex);
 
-          return RichText(
-            textAlign: TextAlign.justify,
-            text: TextSpan(
-              style: style,
-              children: [
-                TextSpan(text: "${visibleText.trimRight()}… "),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.baseline,
-                  baseline: TextBaseline.alphabetic,
-                  child: GestureDetector(
-                    onTap: () => setState(() => expanded = true),
-                    child: Text(
-                      "Read more",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+        return ValueListenableBuilder<bool>(
+          valueListenable: expanded,
+          builder: (context, value, _) {
+            final showFull = value || !didExceed;
+
+            return RichText(
+              textAlign: TextAlign.justify,
+              text: TextSpan(
+                style: style,
+                children: [
+                  TextSpan(
+                    text: showFull ? "$text " : "${visibleText.trimRight()}… ",
+                  ),
+                  if (didExceed)
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.baseline,
+                      baseline: TextBaseline.alphabetic,
+                      child: GestureDetector(
+                        onTap: () => expanded.value = !value,
+                        child: Text(
+                          value ? "Read less" : "Read more",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return RichText(
-            textAlign: TextAlign.justify,
-            text: TextSpan(
-              style: style,
-              children: [
-                TextSpan(text: "${widget.text} "),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.baseline,
-                  baseline: TextBaseline.alphabetic,
-                  child: GestureDetector(
-                    onTap: () => setState(() => expanded = false),
-                    child: Text(
-                      "Read less",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
+                ],
+              ),
+            );
+          },
+        );
       },
     );
   }

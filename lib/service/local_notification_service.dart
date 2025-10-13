@@ -79,7 +79,7 @@ class LocalNotificationService {
       now.year,
       now.month,
       now.day,
-      10,
+      11,
       0,
     );
     if (scheduledDate.isBefore(now)) {
@@ -88,7 +88,7 @@ class LocalNotificationService {
     return scheduledDate;
   }
 
-  Future<void> scheduleDailyTenAMNotification({
+  Future<void> scheduleDailyElevenAMNotification({
     required int id,
     String channelId = "3",
     String channelName = "Schedule Notification",
@@ -113,7 +113,7 @@ class LocalNotificationService {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       'Hey, Food Lover! 😋',
-      'Your stomach just sent a reminder: it’s 10 AM — time to eat something delicious!',
+      'Your stomach just sent a reminder: it’s 11 AM — time to eat something delicious!',
       datetimeSchedule,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,

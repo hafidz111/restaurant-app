@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum RestaurantColors {
-  blue("Blue", Colors.blue);
+  blue("Blue", Color.fromARGB(255, 214, 214, 35));
 
   const RestaurantColors(this.name, this.color);
 

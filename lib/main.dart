@@ -5,9 +5,11 @@ import 'package:restaurant_app/data/local/local_database_service.dart';
 import 'package:restaurant_app/data/provider/detail/restaurant_detail_provider.dart';
 import 'package:restaurant_app/data/provider/favorite/local_database_provider.dart';
 import 'package:restaurant_app/data/provider/home/restaurant_list_provider.dart';
+import 'package:restaurant_app/data/provider/main/app_init_provider.dart';
 import 'package:restaurant_app/data/provider/main/index_nav_provider.dart';
 import 'package:restaurant_app/data/provider/setting/local_notification_provider.dart';
 import 'package:restaurant_app/data/provider/setting/shared_preferences_provider.dart';
+import 'package:restaurant_app/data/provider/setting/switch_setting_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/main/main_screen.dart';
@@ -31,7 +33,6 @@ void main() async {
             context.read<SharedPreferencesService>(),
           ),
         ),
-        ChangeNotifierProvider(create: (context) => IndexNavProvider()),
         Provider(
           create: (context) =>
               LocalNotificationService()..configureLocalTimeZone(),
@@ -41,6 +42,7 @@ void main() async {
             context.read<LocalNotificationService>(),
           )..requestPermissions(),
         ),
+        ChangeNotifierProvider(create: (context) => IndexNavProvider()),
         Provider(create: (context) => ApiServices()),
         ChangeNotifierProvider(
           create: (context) =>
@@ -55,43 +57,42 @@ void main() async {
           create: (context) =>
               LocalDatabaseProvider(context.read<LocalDatabaseService>()),
         ),
+        ChangeNotifierProxyProvider2<
+          SharedPreferencesProvider,
+          LocalNotificationProvider,
+          SwitchSettingProvider
+        >(
+          create: (context) => SwitchSettingProvider(
+            prefProvider: context.read<SharedPreferencesProvider>(),
+            notifProvider: context.read<LocalNotificationProvider>(),
+          ),
+          update: (context, pref, notif, previous) =>
+              previous ??
+              SwitchSettingProvider(prefProvider: pref, notifProvider: notif),
+        ),
+        ChangeNotifierProvider(create: (_) => AppInitProvider()),
       ],
       child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool _initialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSetting();
-  }
-
-  Future<void> _loadSetting() async {
-    final prefProvider = context.read<SharedPreferencesProvider>();
-    await prefProvider.getSettingValue();
-    setState(() => _initialized = true);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (!_initialized) {
+    final appInitProvider = context.watch<AppInitProvider>();
+    final prefProvider = context.watch<SharedPreferencesProvider>();
+
+    if (!appInitProvider.initialized) {
+      final prefProvider = context.read<SharedPreferencesProvider>();
+      Future.microtask(() => appInitProvider.initialize(prefProvider));
       return const MaterialApp(
         home: Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
 
-    final prefProvider = context.watch<SharedPreferencesProvider>();
     final isDark = prefProvider.setting?.isDarkMode ?? false;
 
     return MaterialApp(

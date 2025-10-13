@@ -18,9 +18,9 @@ class LocalNotificationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void scheduleDailyTenAMNotification() {
+  void scheduleDailyElevenAMNotification() {
     _notificationId += 1;
-    flutterNotificationService.scheduleDailyTenAMNotification(
+    flutterNotificationService.scheduleDailyElevenAMNotification(
       id: _notificationId,
     );
   }

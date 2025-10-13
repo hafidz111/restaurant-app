@@ -34,19 +34,19 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: IBMPlexSansCondensed
+    - family: Gontserrat
       fonts:
-        - asset: assets/fonts/IBMPlexSansCondensed-Bold.ttf
+        - asset: assets/fonts/Gontserrat-Bold.ttf
           weight: 700
-        - asset: assets/fonts/IBMPlexSansCondensed-SemiBold.ttf
+        - asset: assets/fonts/Gontserrat-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/IBMPlexSansCondensed-Medium.ttf
+        - asset: assets/fonts/Gontserrat-Medium.ttf
           weight: 500
-        - asset: assets/fonts/IBMPlexSansCondensed-Regular.ttf
+        - asset: assets/fonts/Gontserrat-Regular.ttf
           weight: 400
-        - asset: assets/fonts/IBMPlexSansCondensed-Light.ttf
+        - asset: assets/fonts/Gontserrat-Light.ttf
           weight: 300
-        - asset: assets/fonts/IBMPlexSansCondensed-ExtraLight.ttf
+        - asset: assets/fonts/Gontserrat-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/IBMPlexSansCondensed-Thin.ttf
+        - asset: assets/fonts/Gontserrat-Thin.ttf
           weight: 100
