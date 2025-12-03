@@ -159,7 +159,7 @@ Pengujian dapat menggunakan:
 
 ## 1. Clone Repository
 ```bash
-git clone https://github.com/USERNAME/restaurant-app.git
+git clone https://github.com/hafidz111/restaurant-app.git
 cd restaurant-app
 ```
 
